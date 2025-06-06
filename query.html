@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استعلام البيانات</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>استعلام البيانات</h1>
+        
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="ابحث بالاسم أو البريد الإلكتروني">
+            <button id="searchBtn" class="btn-search">بحث</button>
+            <button id="clearBtn" class="btn-clear">إعادة تعيين</button>
+        </div>
+        
+        <div class="filter-section">
+            <label for="cityFilter">فلترة حسب المدينة:</label>
+            <select id="cityFilter">
+                <option value="">جميع المدن</option>
+                <option value="الرياض">الرياض</option>
+                <option value="جدة">جدة</option>
+                <option value="مكة">مكة</option>
+                <option value="الدمام">الدمام</option>
+                <option value="المدينة">المدينة المنورة</option>
+            </select>
+        </div>
+        
+        <div class="data-summary">
+            <p>عدد السجلات: <span id="recordCount">0</span></p>
+        </div>
+        
+        <div class="data-table-container">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الهاتف</th>
+                        <th>المدينة</th>
+                        <th>الجنس</th>
+                        <th>التاريخ</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="dataBody">
+                    <!-- البيانات ستظهر هنا -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="back-section">
+            <a href="index.html" class="btn-back">العودة للإدخال</a>
+        </div>
+    </div>
+    
+    <script src="query.js"></script>
+</body>
+</html>
