@@ -6,7 +6,673 @@
     <title>تسريع - منصة النشر الاجتماعي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* متغيرات الألوان والتنسيقات */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --gray-color: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            direction: rtl;
+            padding-bottom: 70px;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* شريط الرأس */
+        header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .home-icon {
+            position: absolute;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .home-icon:hover {
+            transform: scale(1.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* زر الإغلاق */
+        .close-btn {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #777;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            color: var(--danger-color);
+        }
+
+        /* الصفحة الرئيسية */
+        #home-page .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-image {
+            height: 180px;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+
+        .post-content {
+            padding: 15px;
+        }
+
+        .post-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .post-description {
+            color: var(--gray-color);
+            margin-bottom: 10px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid var(--light-gray);
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .post-price {
+            font-weight: 700;
+            color: var(--success-color);
+            background: rgba(76, 175, 80, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .post-author i {
+            margin-left: 5px;
+            color: var(--primary-color);
+        }
+
+        /* صفحات التطبيق */
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 70px;
+            background-color: white;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+            transition: transform 0.4s ease;
+            transform: translateX(100%);
+        }
+
+        .page.active {
+            transform: translateX(0);
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* صفحة التوثيق */
+        .auth-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            position: relative;
+            color: var(--gray-color);
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .auth-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        /* صفحة إنشاء منشور جديد */
+        #add-post-page .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* تنسيقات رفع الصور */
+        .image-upload-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        #image-name {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            flex: 1;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            max-width: 300px;
+            height: 200px;
+            background-color: var(--light-gray);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-remove {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-remove:hover {
+            background: var(--danger-color);
+        }
+
+        /* صفحة حساب المستخدم */
+        #profile-page .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #user-info {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 20px 0;
+        }
+
+        .user-detail {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            align-items: center;
+        }
+
+        .user-detail:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .user-detail i {
+            width: 30px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .user-detail span {
+            flex: 1;
+        }
+
+        /* شاشة التحميل */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            color: white;
+            font-size: 1.5rem;
+            flex-direction: column;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 5px solid #fff;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            width: 80%;
+            max-width: 300px;
+            height: 10px;
+            background: #555;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* الأزرار */
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-logout {
+            background: var(--danger-color);
+        }
+
+        .btn-logout:hover {
+            background: #d32f2f;
+        }
+
+        /* شريط التذييل */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .icon i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .icon.highlight {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            transform: translateY(-15px);
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.4);
+        }
+
+        .icon.highlight i {
+            font-size: 1.5rem;
+        }
+
+        .icon.active, .icon:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* رسائل التنبيه */
+        #auth-message {
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: var(--danger-color);
+            border: 1px solid #ffcdd2;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border: 1px solid #c8e6c9;
+        }
+
+        .no-posts {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-color);
+            grid-column: 1 / -1;
+        }
+
+        /* رسائل تنبيه */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+        }
+
+        .alert.show {
+            transform: translateX(0);
+        }
+
+        .alert-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .alert-error {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* التصميم للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .auth-container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+            
+            .footer-icons .icon span {
+                display: none;
+            }
+            
+            .icon {
+                padding: 5px;
+            }
+            
+            .icon.highlight {
+                padding: 12px;
+            }
+            
+            .home-icon {
+                right: 10px;
+                font-size: 1.3rem;
+            }
+            
+            .close-btn {
+                left: 10px;
+                top: 10px;
+                font-size: 1.3rem;
+            }
+            
+            .post-card {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- شريط الرأس -->
@@ -18,22 +684,26 @@
     </header>
 
     <!-- الصفحة الرئيسية (عرض المنشورات) -->
-    <main id="home-page">
+    <main id="home-page" class="page active">
         <div class="container">
             <div id="posts-container" class="posts-grid">
                 <!-- المنشورات ستظهر هنا -->
+                <div class="no-posts">
+                    <i class="fas fa-spinner fa-spin fa-2x" style="color: #4361ee; margin-bottom: 15px;"></i>
+                    <p>جاري تحميل المنشورات...</p>
+                </div>
             </div>
         </div>
     </main>
 
     <!-- صفحة التوثيق (تسجيل دخول / إنشاء حساب) -->
-    <div id="auth-page" class="page hidden">
+    <div id="auth-page" class="page">
         <div class="auth-container">
             <button id="close-auth" class="close-btn">
                 <i class="fas fa-times"></i>
             </button>
-            <h2>تسجيل الدخول / إنشاء حساب</h2>
-            <div id="auth-message" class="message"></div>
+            <h2 style="text-align: center; margin-bottom: 20px;">تسجيل الدخول / إنشاء حساب</h2>
+            <div id="auth-message"></div>
             
             <div class="auth-tabs">
                 <button class="tab-btn active" data-tab="login">تسجيل الدخول</button>
@@ -43,43 +713,47 @@
             <div id="login-form" class="auth-form">
                 <div class="form-group">
                     <label for="login-email">البريد الإلكتروني</label>
-                    <input type="email" id="login-email" placeholder="ادخل بريدك الإلكتروني">
+                    <input type="email" id="login-email" class="form-control" placeholder="ادخل بريدك الإلكتروني">
                 </div>
                 <div class="form-group">
                     <label for="login-password">كلمة المرور</label>
-                    <input type="password" id="login-password" placeholder="ادخل كلمة المرور">
+                    <input type="password" id="login-password" class="form-control" placeholder="ادخل كلمة المرور">
                 </div>
-                <button id="login-btn" class="btn">تسجيل الدخول</button>
+                <button id="login-btn" class="btn">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
             </div>
             
             <div id="signup-form" class="auth-form hidden">
                 <div class="form-group">
                     <label for="signup-name">الاسم الكامل</label>
-                    <input type="text" id="signup-name" placeholder="ادخل اسمك الكامل">
+                    <input type="text" id="signup-name" class="form-control" placeholder="ادخل اسمك الكامل">
                 </div>
                 <div class="form-group">
                     <label for="signup-phone">رقم الهاتف</label>
-                    <input type="tel" id="signup-phone" placeholder="ادخل رقم هاتفك">
+                    <input type="tel" id="signup-phone" class="form-control" placeholder="ادخل رقم هاتفك">
                 </div>
                 <div class="form-group">
                     <label for="signup-email">البريد الإلكتروني</label>
-                    <input type="email" id="signup-email" placeholder="ادخل بريدك الإلكتروني">
+                    <input type="email" id="signup-email" class="form-control" placeholder="ادخل بريدك الإلكتروني">
                 </div>
                 <div class="form-group">
                     <label for="signup-password">كلمة المرور</label>
-                    <input type="password" id="signup-password" placeholder="أنشئ كلمة مرور">
+                    <input type="password" id="signup-password" class="form-control" placeholder="أنشئ كلمة مرور">
                 </div>
                 <div class="form-group">
                     <label for="signup-address">العنوان</label>
-                    <input type="text" id="signup-address" placeholder="ادخل عنوانك">
+                    <input type="text" id="signup-address" class="form-control" placeholder="ادخل عنوانك">
                 </div>
-                <button id="signup-btn" class="btn">إنشاء حساب</button>
+                <button id="signup-btn" class="btn">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
             </div>
         </div>
     </div>
 
     <!-- صفحة إنشاء منشور جديد -->
-    <div id="add-post-page" class="page hidden">
+    <div id="add-post-page" class="page">
         <div class="container">
             <div class="page-header">
                 <h2 class="page-title">إنشاء منشور جديد</h2>
@@ -91,23 +765,23 @@
             <div id="add-post-form">
                 <div class="form-group">
                     <label for="post-title">عنوان المنشور</label>
-                    <input type="text" id="post-title" placeholder="أدخل عنواناً جذاباً">
+                    <input type="text" id="post-title" class="form-control" placeholder="أدخل عنواناً جذاباً">
                 </div>
                 <div class="form-group">
                     <label for="post-description">الوصف</label>
-                    <textarea id="post-description" rows="4" placeholder="صف منشورك بالتفصيل"></textarea>
+                    <textarea id="post-description" class="form-control" rows="4" placeholder="صف منشورك بالتفصيل"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="post-price">السعر (اختياري)</label>
-                    <input type="text" id="post-price" placeholder="مثال: 100 ريال">
+                    <input type="text" id="post-price" class="form-control" placeholder="مثال: 100 ريال">
                 </div>
                 <div class="form-group">
                     <label for="post-location">الموقع</label>
-                    <input type="text" id="post-location" placeholder="أدخل موقعك">
+                    <input type="text" id="post-location" class="form-control" placeholder="أدخل موقعك">
                 </div>
                 <div class="form-group">
                     <label for="post-phone">رقم الهاتف</label>
-                    <input type="tel" id="post-phone" placeholder="رقم للتواصل">
+                    <input type="tel" id="post-phone" class="form-control" placeholder="رقم للتواصل">
                 </div>
                 <div class="form-group">
                     <label for="post-image">صورة المنشور</label>
@@ -128,13 +802,15 @@
                         </button>
                     </div>
                 </div>
-                <button id="publish-btn" class="btn">نشر الآن</button>
+                <button id="publish-btn" class="btn">
+                    <i class="fas fa-paper-plane"></i> نشر الآن
+                </button>
             </div>
         </div>
     </div>
 
     <!-- صفحة حساب المستخدم -->
-    <div id="profile-page" class="page hidden">
+    <div id="profile-page" class="page">
         <div class="container">
             <div class="page-header">
                 <h2 class="page-title">حسابي</h2>
@@ -144,173 +820,21 @@
             </div>
             <div id="user-info">
                 <!-- معلومات المستخدم ستظهر هنا -->
-            </div>
-            <button id="logout-btn" class="btn">تسجيل الخروج</button>
-        </div>
-    </div>
-
-    <!-- صفحة الدفع (Checkout) -->
-    <div id="checkout-page" class="page hidden">
-        <div class="container">
-            <div class="page-header">
-                <h2 class="page-title">إتمام عملية الشراء</h2>
-                <button id="close-checkout" class="close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="checkout-container">
-                <div class="bank-card">
-                    <h3><i class="fas fa-shield-alt"></i> ادفع بآمان 🛡️</h3>
-                    
-                    <div class="bank-details">
-                        <div class="bank-detail">
-                            <div class="label">البنك:</div>
-                            <div class="value">كريمي</div>
-                        </div>
-                        <div class="bank-detail">
-                            <div class="label">الحساب:</div>
-                            <div class="value">SA123456789012345</div>
-                        </div>
-                    </div>
-                    
-                    <div class="bank-certificate">
-                        <i class="fas fa-certificate"></i> حساب موثوق ومرخص من البنك المركزي
-                    </div>
-                </div>
-                
-                <div class="amount-breakdown">
-                    <div class="breakdown-item">
-                        <span>سعر السلعة:</span>
-                        <span>200 ريال</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <span>عمولة المنصة:</span>
-                        <span>20 ريال</span>
-                    </div>
-                    <div class="breakdown-item total">
-                        <span>الإجمالي:</span>
-                        <span>220 ريال</span>
-                    </div>
-                </div>
-                
-                <div class="countdown">
-                    <i class="fas fa-clock"></i> لديك 60 دقيقة لإتمام الدفع
-                </div>
-                
-                <div class="form-group">
-                    <label>ثبت إثبات التحويل:</label>
-                    <input type="file" id="payment-receipt" accept="image/*">
-                    <p class="info-message">صورة واضحة للإيداع توضح التاريخ + اسمك + المبلغ</p>
-                </div>
-                
-                <div class="form-group">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="notify-seller" checked>
-                        <label for="notify-seller">☑️ تم إخطار البائع بتأكيد دفعتك</label>
-                    </div>
-                </div>
-                
-                <button id="confirm-payment" class="btn">تأكيد الدفع</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- صفحة متابعة الطلب (Order Status) -->
-    <div id="order-status-page" class="page hidden">
-        <div class="container">
-            <div class="page-header">
-                <h2 class="page-title">متابعة حالة الطلب</h2>
-                <button id="close-order-status" class="close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="checkout-container">
-                <div class="status-indicator">
-                    <div class="status-step completed">
-                        <div class="status-bubble">1</div>
-                        <div>بانتظار الإيداع</div>
-                    </div>
-                    <div class="status-step active">
-                        <div class="status-bubble">2</div>
-                        <div>دفعة مؤكدة</div>
-                    </div>
-                    <div class="status-step">
-                        <div class="status-bubble">3</div>
-                        <div>تم التسليم</div>
-                    </div>
-                </div>
-                
-                <div class="message info-message">
-                    <i class="fas fa-info-circle"></i> تم تأكيد دفعتك بنجاح، البائع يستعد لتسليم السلعة
-                </div>
-                
-                <div class="order-details">
-                    <h3>تفاصيل الطلب</h3>
-                    <div class="detail-item">
-                        <span>رقم الطلب:</span>
-                        <span>ORD-2023-12345</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>السلعة:</span>
-                        <span>ساعة ذكية ماركة XYZ</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>المبلغ المدفوع:</span>
-                        <span>220 ريال</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>تاريخ الطلب:</span>
-                        <span>15 نوفمبر 2023</span>
-                    </div>
-                </div>
-                
-                <button id="confirm-delivery" class="confirm-button hidden">أكد استلام السلعة</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- صفحة تأكيد الاستلام (Completion) -->
-    <div id="completion-page" class="page hidden">
-        <div class="container">
-            <div class="page-header">
-                <h2 class="page-title">اكتمال العملية</h2>
-                <button id="close-completion" class="close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="checkout-container">
-                <div class="confirmation-card">
-                    <h2>✔ تمت العملية بنجاح!</h2>
-                    <p>تم تحويل <b>200 ريال</b> للبائع بعد خصم عمولتنا (20 ريال).</p>
-                </div>
-                
-                <div class="confirmation-document">
-                    <h3>وثيقة تأكيد الاستلام</h3>
-                    <p>تحميل الوثيقة: <a href="#" class="btn btn-outline"><i class="fas fa-download"></i> تحميل PDF</a></p>
-                    
-                    <div class="qr-code">
-                        <i class="fas fa-qrcode"></i>
-                    </div>
-                    
-                    <p>المسح للتحقق من تفاصيل التحويل</p>
-                </div>
-                
-                <div class="message info-message">
-                    <h3>⚠️ تذكر:</h3>
-                    <p>لديك 24 ساعة للإبلاغ عن أي مشكلة عبر الرابط أدناه</p>
-                    <button class="btn btn-warning"><i class="fas fa-exclamation-triangle"></i> الإبلاغ عن مشكلة</button>
+                <div class="no-posts" style="padding: 20px 0;">
+                    <i class="fas fa-user-circle fa-3x" style="color: #4361ee; margin-bottom: 15px;"></i>
+                    <p>جاري تحميل معلومات الحساب...</p>
                 </div>
             </div>
+            <button id="logout-btn" class="btn btn-logout">
+                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+            </button>
         </div>
     </div>
 
     <!-- شاشة التحميل -->
     <div id="loading-overlay" class="loading-overlay hidden">
         <div class="spinner"></div>
-        <p>جاري النشر...</p>
+        <p id="loading-text">جاري النشر...</p>
         <div class="progress-bar">
             <div class="progress" id="upload-progress"></div>
         </div>
@@ -326,6 +850,7 @@
             <div class="icon">
                 <i class="fas fa-bell"></i>
                 <span>الإشعارات</span>
+                <span class="notification-badge">3</span>
             </div>
             <div class="icon highlight" id="add-post-icon">
                 <i class="fas fa-plus"></i>
@@ -341,6 +866,390 @@
         </div>
     </footer>
 
-    <script src="app.js"></script>
+    <!-- رسائل تنبيه -->
+    <div id="success-alert" class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <span id="alert-message">تمت العملية بنجاح!</span>
+    </div>
+
+    <div id="error-alert" class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="alert-message">حدث خطأ أثناء العملية!</span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // محاكاة لبيئة Firebase للعرض التوضيحي
+        document.addEventListener('DOMContentLoaded', () => {
+            // عناصر DOM
+            const homePage = document.getElementById('home-page');
+            const authPage = document.getElementById('auth-page');
+            const addPostPage = document.getElementById('add-post-page');
+            const profilePage = document.getElementById('profile-page');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const uploadProgress = document.getElementById('upload-progress');
+            const loadingText = document.getElementById('loading-text');
+
+            const authMessage = document.getElementById('auth-message');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const loginBtn = document.getElementById('login-btn');
+            const signupBtn = document.getElementById('signup-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const publishBtn = document.getElementById('publish-btn');
+
+            const postsContainer = document.getElementById('posts-container');
+            const userInfo = document.getElementById('user-info');
+
+            const profileIcon = document.getElementById('profile-icon');
+            const addPostIcon = document.getElementById('add-post-icon');
+            const homeIcon = document.getElementById('home-icon');
+            const closeAuthBtn = document.getElementById('close-auth');
+            const closeAddPostBtn = document.getElementById('close-add-post');
+            const closeProfileBtn = document.getElementById('close-profile');
+
+            // عناصر رفع الصورة
+            const postImageInput = document.getElementById('post-image');
+            const chooseImageBtn = document.getElementById('choose-image-btn');
+            const cameraBtn = document.getElementById('camera-btn');
+            const imageName = document.getElementById('image-name');
+            const imagePreview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            const removeImageBtn = document.getElementById('remove-image-btn');
+
+            // رسائل التنبيه
+            const successAlert = document.getElementById('success-alert');
+            const errorAlert = document.getElementById('error-alert');
+
+            // بيانات تجريبية للمنشورات
+            const samplePosts = [
+                {
+                    id: 1,
+                    title: "سيارة للبيع بحالة ممتازة",
+                    description: "سيارة تويوتا كامري 2020 للبيع، موديل حديث، فحص كامل، بدون حوادث، صيانة دورية. للاستفسار الاتصال على الرقم المرفق.",
+                    price: "85,000 ريال",
+                    location: "الرياض",
+                    phone: "0551122334",
+                    authorName: "محمد أحمد",
+                    imageUrl: "https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=1000"
+                },
+                {
+                    id: 2,
+                    title: "شقة للإيجار في حي الملقا",
+                    description: "شقة فاخرة للإيجار في حي الملقا، مساحة 200 متر، 3 غرف نوم، 3 دورات مياه، صالة كبيرة، مطبخ مجهز، مواقف سيارات.",
+                    price: "45,000 ريال سنوياً",
+                    location: "الرياض",
+                    phone: "0509988776",
+                    authorName: "سارة عبدالله",
+                    imageUrl: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1000"
+                },
+                {
+                    id: 3,
+                    title: "لابتوب جديد للبيع",
+                    description: "لابتوب ديل XPS 15 بمواصفات عالية، شاشة 4K، معالج i7، 16 جيجا رام، 512 جيجا SSD، كرت شاشة 4 جيجا. لم يستخدم إلا شهر واحد فقط.",
+                    price: "6,500 ريال",
+                    location: "جدة",
+                    phone: "0543344556",
+                    authorName: "خالد سعيد",
+                    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1000"
+                }
+            ];
+
+            // بيانات المستخدم التجريبية
+            const sampleUser = {
+                name: "أحمد محمد",
+                email: "ahmed@example.com",
+                phone: "0551122334",
+                address: "الرياض، حي العليا، شارع الملك فهد"
+            };
+
+            // تحميل المنشورات عند بدء التحميل
+            loadPosts();
+
+            // محاكاة تحميل المنشورات
+            function loadPosts() {
+                setTimeout(() => {
+                    postsContainer.innerHTML = '';
+                    
+                    samplePosts.forEach(post => {
+                        createPostCard(post);
+                    });
+                }, 1000);
+            }
+
+            // إنشاء بطاقة منشور
+            function createPostCard(post) {
+                const postCard = document.createElement('div');
+                postCard.className = 'post-card';
+                
+                // إذا كان هناك صورة، نعرضها. وإلا نعرض أيقونة افتراضية.
+                const imageContent = post.imageUrl 
+                    ? `<div class="post-image"><img src="${post.imageUrl}" alt="${post.title}"></div>`
+                    : `<div class="post-image"><i class="fas fa-image fa-3x"></i></div>`;
+                
+                postCard.innerHTML = `
+                    ${imageContent}
+                    <div class="post-content">
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-description">${post.description}</p>
+                        <div class="post-meta">
+                            ${post.price ? `<div class="post-price">${post.price}</div>` : ''}
+                            <div class="post-location"><i class="fas fa-map-marker-alt"></i> ${post.location}</div>
+                        </div>
+                        <div class="post-author">
+                            <i class="fas fa-user"></i> ${post.authorName}
+                            <span class="post-phone">${post.phone}</span>
+                        </div>
+                    </div>
+                `;
+                
+                postsContainer.appendChild(postCard);
+            }
+
+            // تسجيل الدخول
+            loginBtn.addEventListener('click', e => {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (!email || !password) {
+                    showAuthMessage('يرجى ملء جميع الحقول', 'error');
+                    return;
+                }
+                
+                // محاكاة عملية تسجيل الدخول
+                loadingOverlay.classList.remove('hidden');
+                loadingText.textContent = "جاري تسجيل الدخول...";
+                
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                    showAlert('تم تسجيل الدخول بنجاح!', 'success');
+                    showPage(homePage);
+                    resetAuthForms();
+                }, 1500);
+            });
+
+            // إنشاء حساب
+            signupBtn.addEventListener('click', e => {
+                e.preventDefault();
+                
+                const name = document.getElementById('signup-name').value;
+                const phone = document.getElementById('signup-phone').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                const address = document.getElementById('signup-address').value;
+                
+                if (!name || !phone || !email || !password || !address) {
+                    showAuthMessage('يرجى ملء جميع الحقول', 'error');
+                    return;
+                }
+                
+                // محاكاة عملية إنشاء حساب
+                loadingOverlay.classList.remove('hidden');
+                loadingText.textContent = "جاري إنشاء الحساب...";
+                
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                    showAlert('تم إنشاء الحساب بنجاح!', 'success');
+                    showPage(homePage);
+                    resetAuthForms();
+                }, 1500);
+            });
+
+            // تسجيل الخروج
+            logoutBtn.addEventListener('click', () => {
+                showPage(homePage);
+                showAlert('تم تسجيل الخروج بنجاح', 'success');
+            });
+
+            // نشر منشور جديد مع شريط التقدم
+            publishBtn.addEventListener('click', e => {
+                e.preventDefault();
+                
+                const title = document.getElementById('post-title').value;
+                const description = document.getElementById('post-description').value;
+                const price = document.getElementById('post-price').value;
+                const location = document.getElementById('post-location').value;
+                const phone = document.getElementById('post-phone').value;
+                const imageFile = postImageInput.files[0];
+                
+                if (!title || !description || !location || !phone) {
+                    showAlert('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+                
+                // إظهار شاشة التحميل
+                loadingOverlay.classList.remove('hidden');
+                loadingText.textContent = "جاري النشر...";
+                uploadProgress.style.width = '0%';
+                
+                // محاكاة رفع الصورة مع شريط التقدم
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    uploadProgress.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // محاكاة اكتمال النشر
+                        setTimeout(() => {
+                            loadingOverlay.classList.add('hidden');
+                            showAlert('تم نشر المنشور بنجاح!', 'success');
+                            resetAddPostForm();
+                            showPage(homePage);
+                        }, 500);
+                    }
+                }, 100);
+            });
+
+            // عرض معلومات المستخدم
+            profileIcon.addEventListener('click', () => {
+                // محاكاة جلب بيانات المستخدم
+                userInfo.innerHTML = `
+                    <div class="user-detail">
+                        <i class="fas fa-user"></i>
+                        <span>${sampleUser.name}</span>
+                    </div>
+                    <div class="user-detail">
+                        <i class="fas fa-envelope"></i>
+                        <span>${sampleUser.email}</span>
+                    </div>
+                    <div class="user-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>${sampleUser.phone}</span>
+                    </div>
+                    <div class="user-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${sampleUser.address}</span>
+                    </div>
+                `;
+                showPage(profilePage);
+            });
+
+            // إضافة منشور جديد
+            addPostIcon.addEventListener('click', () => {
+                resetAddPostForm();
+                showPage(addPostPage);
+            });
+
+            // العودة للصفحة الرئيسية
+            homeIcon.addEventListener('click', () => {
+                showPage(homePage);
+            });
+
+            // إغلاق صفحة التوثيق
+            closeAuthBtn.addEventListener('click', () => {
+                showPage(homePage);
+            });
+
+            // إغلاق صفحة إضافة المنشور
+            closeAddPostBtn.addEventListener('click', () => {
+                showPage(homePage);
+            });
+
+            // إغلاق صفحة الملف الشخصي
+            closeProfileBtn.addEventListener('click', () => {
+                showPage(homePage);
+            });
+
+            // تغيير علامات التوثيق
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    if (btn.dataset.tab === 'login') {
+                        loginForm.classList.remove('hidden');
+                        signupForm.classList.add('hidden');
+                    } else {
+                        loginForm.classList.add('hidden');
+                        signupForm.classList.remove('hidden');
+                    }
+                });
+            });
+
+            // اختيار صورة من المعرض
+            chooseImageBtn.addEventListener('click', () => {
+                postImageInput.click();
+            });
+
+            // فتح الكاميرا (إذا كان الجهاز يدعمها)
+            cameraBtn.addEventListener('click', () => {
+                postImageInput.setAttribute('capture', 'environment');
+                postImageInput.click();
+            });
+
+            // عرض معاينة الصورة
+            postImageInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    imageName.textContent = file.name;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // إزالة الصورة المختارة
+            removeImageBtn.addEventListener('click', () => {
+                postImageInput.value = '';
+                imageName.textContent = 'لم يتم اختيار صورة';
+                imagePreview.classList.add('hidden');
+            });
+
+            // وظائف مساعدة
+            function showPage(page) {
+                document.querySelectorAll('.page').forEach(p => {
+                    p.classList.remove('active');
+                });
+                page.classList.add('active');
+            }
+
+            function showAuthMessage(message, type) {
+                authMessage.textContent = message;
+                authMessage.className = '';
+                authMessage.classList.add(type + '-message');
+            }
+
+            function showAlert(message, type) {
+                const alert = type === 'success' ? successAlert : errorAlert;
+                alert.querySelector('#alert-message').textContent = message;
+                alert.classList.add('show');
+                
+                setTimeout(() => {
+                    alert.classList.remove('show');
+                }, 3000);
+            }
+
+            function resetAddPostForm() {
+                document.getElementById('post-title').value = '';
+                document.getElementById('post-description').value = '';
+                document.getElementById('post-price').value = '';
+                document.getElementById('post-location').value = '';
+                document.getElementById('post-phone').value = '';
+                postImageInput.value = '';
+                imageName.textContent = 'لم يتم اختيار صورة';
+                imagePreview.classList.add('hidden');
+            }
+
+            function resetAuthForms() {
+                document.getElementById('login-email').value = '';
+                document.getElementById('login-password').value = '';
+                document.getElementById('signup-name').value = '';
+                document.getElementById('signup-phone').value = '';
+                document.getElementById('signup-email').value = '';
+                document.getElementById('signup-password').value = '';
+                document.getElementById('signup-address').value = '';
+                authMessage.textContent = '';
+                authMessage.className = '';
+            }
+        });
+    </script>
 </body>
-                        </html>
+        </html>
