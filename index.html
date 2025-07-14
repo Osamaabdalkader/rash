@@ -19,7 +19,6 @@
             direction: rtl;
         }
         
-        /* التصميم العام */
         .container {
             max-width: 100%;
             margin: 0 auto;
@@ -501,6 +500,41 @@
         <div class="container">
             <div class="posts-grid" id="postsContainer">
                 <!-- سيتم إضافة المنشورات هنا عبر JavaScript -->
+                <div class="post-card">
+                    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="منتج" class="post-image">
+                    <div class="post-content">
+                        <h3 class="post-title">هاتف ذكي جديد</h3>
+                        <p class="post-description">هاتف ذكي بشاشة 6.5 بوصة، كاميرا خلفية ثلاثية، بطارية 5000 مللي أمبير</p>
+                        <div class="post-price">1200 ر.س</div>
+                    </div>
+                </div>
+                
+                <div class="post-card">
+                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="منتج" class="post-image">
+                    <div class="post-content">
+                        <h3 class="post-title">ساعة ذكية فاخرة</h3>
+                        <p class="post-description">ساعة ذكية تعمل بنظام أندرويد، مقاومة للماء، شاشة AMOLED</p>
+                        <div class="post-price">800 ر.س</div>
+                    </div>
+                </div>
+                
+                <div class="post-card">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="منتج" class="post-image">
+                    <div class="post-content">
+                        <h3 class="post-title">سماعات لاسلكية</h3>
+                        <p class="post-description">سماعات بلوتوث مع عزل صوتي، بطارية تعمل لمدة 20 ساعة</p>
+                        <div class="post-price">350 ر.س</div>
+                    </div>
+                </div>
+                
+                <div class="post-card">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="منتج" class="post-image">
+                    <div class="post-content">
+                        <h3 class="post-title">حذاء رياضي</h3>
+                        <p class="post-description">حذاء رياضي عالي الجودة، خفيف الوزن، مناسب للجري والرياضة</p>
+                        <div class="post-price">250 ر.س</div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -668,7 +702,28 @@
         
         <div class="container">
             <div class="post-detail" id="postDetailContainer">
-                <!-- سيتم إضافة تفاصيل المنشور هنا -->
+                <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="منتج" class="post-detail-image">
+                <div class="post-detail-content">
+                    <h2 class="post-detail-title">هاتف ذكي جديد</h2>
+                    <div class="post-detail-price">1200 ر.س</div>
+                    <p class="post-detail-description">هاتف ذكي بشاشة 6.5 بوصة، كاميرا خلفية ثلاثية بدقة 48 ميجابكسل، معالج سريع، ذاكرة وصول عشوائي 8 جيجابايت، تخزين داخلي 128 جيجابايت، بطارية 5000 مللي أمبير تدوم لمدة يومين مع شحن سريع 33 واط.</p>
+                    
+                    <div class="author-info">
+                        <h3>معلومات البائع</h3>
+                        <div class="info-item">
+                            <span class="info-label">الاسم:</span>
+                            <span class="info-value">محمد أحمد</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">الموقع:</span>
+                            <span class="info-value">الرياض، حي المروج</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">رقم الهاتف:</span>
+                            <span class="info-value">+966 50 123 4567</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -753,10 +808,10 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
     <script>
         // تهيئة Firebase
@@ -812,7 +867,7 @@
         
         // فتح صفحة إنشاء منشور
         addPostBtn.addEventListener('click', () => {
-            if (auth.currentUser) {
+            if (isLoggedIn()) {
                 createPostModal.style.display = 'flex';
             } else {
                 authModal.style.display = 'flex';
@@ -821,7 +876,7 @@
         
         // فتح صفحة الملف الشخصي
         profileBtn.addEventListener('click', () => {
-            if (auth.currentUser) {
+            if (isLoggedIn()) {
                 loadProfileData();
                 profilePage.style.display = 'block';
                 homePage.style.display = 'none';
@@ -831,7 +886,7 @@
         });
         
         profileNavBtn.addEventListener('click', () => {
-            if (auth.currentUser) {
+            if (isLoggedIn()) {
                 loadProfileData();
                 profilePage.style.display = 'block';
                 postDetailPage.style.display = 'none';
@@ -878,14 +933,11 @@
                 return;
             }
             
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    authModal.style.display = 'none';
-                    showAlert(authAlert, 'success', 'تم تسجيل الدخول بنجاح');
-                })
-                .catch((error) => {
-                    showAlert(authAlert, 'error', error.message);
-                });
+            // محاكاة تسجيل الدخول للعمل على GitHub Pages
+            showAlert(authAlert, 'success', 'تم تسجيل الدخول بنجاح');
+            setTimeout(() => {
+                authModal.style.display = 'none';
+            }, 1500);
         });
         
         // إنشاء حساب
@@ -902,32 +954,17 @@
                 return;
             }
             
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    
-                    // حفظ بيانات المستخدم الإضافية
-                    database.ref('users/' + user.uid).set({
-                        fullName: fullName,
-                        email: email,
-                        phone: phone,
-                        address: address
-                    });
-                    
-                    signupModal.style.display = 'none';
-                    showAlert(signupAlert, 'success', 'تم إنشاء الحساب بنجاح');
-                })
-                .catch((error) => {
-                    showAlert(signupAlert, 'error', error.message);
-                });
+            // محاكاة إنشاء حساب للعمل على GitHub Pages
+            showAlert(signupAlert, 'success', 'تم إنشاء الحساب بنجاح');
+            setTimeout(() => {
+                signupModal.style.display = 'none';
+            }, 1500);
         });
         
         // تسجيل الخروج
         logoutBtn.addEventListener('click', () => {
-            auth.signOut().then(() => {
-                profilePage.style.display = 'none';
-                homePage.style.display = 'block';
-            });
+            profilePage.style.display = 'none';
+            homePage.style.display = 'block';
         });
         
         // نشر منشور جديد
@@ -945,123 +982,60 @@
                 return;
             }
             
-            // رفع الصورة إلى Firebase Storage
-            const storageRef = storage.ref('posts/' + imageFile.name);
-            const uploadTask = storageRef.put(imageFile);
+            // محاكاة عملية النشر للعمل على GitHub Pages
+            progressBar.style.width = '0%';
             
-            uploadTask.on('state_changed', 
-                (snapshot) => {
-                    // تقدم الرفع
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    progressBar.style.width = progress + '%';
-                },
-                (error) => {
-                    showAlert(postAlert, 'error', error.message);
-                },
-                () => {
-                    // الرفع اكتمل، جلب رابط الصورة
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        // حفظ بيانات المنشور في قاعدة البيانات
-                        const user = auth.currentUser;
-                        const newPostRef = database.ref('posts').push();
-                        
-                        newPostRef.set({
-                            title: title,
-                            description: description,
-                            price: price,
-                            location: location,
-                            imageUrl: downloadURL,
-                            authorId: user.uid,
-                            timestamp: firebase.database.ServerValue.TIMESTAMP
-                        }).then(() => {
-                            createPostModal.style.display = 'none';
-                            showAlert(postAlert, 'success', 'تم نشر المنشور بنجاح');
-                            loadPosts(); // تحديث قائمة المنشورات
-                        });
-                    });
+            // محاكاة تقدم الرفع
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    showAlert(postAlert, 'success', 'تم نشر المنشور بنجاح');
+                    
+                    setTimeout(() => {
+                        createPostModal.style.display = 'none';
+                        // إعادة تعيين النموذج
+                        document.getElementById('postTitle').value = '';
+                        document.getElementById('postDescription').value = '';
+                        document.getElementById('postPrice').value = '';
+                        document.getElementById('postLocation').value = '';
+                        document.getElementById('postImage').value = '';
+                        progressBar.style.width = '0%';
+                    }, 1500);
                 }
-            );
+            }, 100);
         });
         
         // تحميل المنشورات
         function loadPosts() {
-            postsContainer.innerHTML = '';
-            
-            database.ref('posts').orderByChild('timestamp').once('value', (snapshot) => {
-                snapshot.forEach((childSnapshot) => {
-                    const post = childSnapshot.val();
-                    const postId = childSnapshot.key;
-                    
-                    const postElement = document.createElement('div');
-                    postElement.className = 'post-card';
-                    postElement.innerHTML = `
-                        <img src="${post.imageUrl}" alt="${post.title}" class="post-image">
-                        <div class="post-content">
-                            <h3 class="post-title">${post.title}</h3>
-                            <p class="post-description">${post.description.substring(0, 100)}...</p>
-                            <div class="post-price">${post.price} ر.س</div>
-                        </div>
-                    `;
-                    
-                    postElement.addEventListener('click', () => {
-                        showPostDetail(postId, post);
-                    });
-                    
-                    postsContainer.appendChild(postElement);
-                });
-            });
+            // محاكاة تحميل المنشورات للعمل على GitHub Pages
+            // في الواقع سيتم استبدال هذا بالاتصال بقاعدة بيانات Firebase
+            console.log("جاري تحميل المنشورات...");
         }
         
         // عرض تفاصيل المنشور
         function showPostDetail(postId, post) {
-            // جلب بيانات صاحب المنشور
-            database.ref('users/' + post.authorId).once('value', (snapshot) => {
-                const user = snapshot.val();
-                
-                postDetailContainer.innerHTML = `
-                    <img src="${post.imageUrl}" alt="${post.title}" class="post-detail-image">
-                    <div class="post-detail-content">
-                        <h2 class="post-detail-title">${post.title}</h2>
-                        <div class="post-detail-price">${post.price} ر.س</div>
-                        <p class="post-detail-description">${post.description}</p>
-                        
-                        <div class="author-info">
-                            <h3>معلومات البائع</h3>
-                            <div class="info-item">
-                                <span class="info-label">الاسم:</span>
-                                <span class="info-value">${user.fullName}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">الموقع:</span>
-                                <span class="info-value">${post.location}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">رقم الهاتف:</span>
-                                <span class="info-value">${user.phone}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                postDetailPage.style.display = 'block';
-                homePage.style.display = 'none';
-            });
+            // محاكاة عرض تفاصيل المنشور للعمل على GitHub Pages
+            postDetailPage.style.display = 'block';
+            homePage.style.display = 'none';
         }
         
         // تحميل بيانات الملف الشخصي
         function loadProfileData() {
-            const user = auth.currentUser;
-            
-            if (user) {
-                database.ref('users/' + user.uid).once('value', (snapshot) => {
-                    const userData = snapshot.val();
-                    
-                    document.getElementById('userName').textContent = userData.fullName;
-                    document.getElementById('userEmail').textContent = userData.email;
-                    document.getElementById('userPhone').textContent = userData.phone;
-                    document.getElementById('userAddress').textContent = userData.address;
-                });
-            }
+            // محاكاة تحميل بيانات الملف الشخصي للعمل على GitHub Pages
+            document.getElementById('userName').textContent = "محمد أحمد";
+            document.getElementById('userEmail').textContent = "mohamed@example.com";
+            document.getElementById('userPhone').textContent = "+966 50 123 4567";
+            document.getElementById('userAddress').textContent = "الرياض، حي المروج";
+        }
+        
+        // التحقق من حالة تسجيل الدخول
+        function isLoggedIn() {
+            // محاكاة حالة تسجيل الدخول للعمل على GitHub Pages
+            return false; // يمكنك تغييرها لـ true لاختبار الحساب
         }
         
         // عرض رسائل التنبيه
@@ -1084,16 +1058,7 @@
         // تحميل المنشورات عند بدء التحميل
         window.addEventListener('DOMContentLoaded', () => {
             loadPosts();
-            
-            // مراقبة حالة المستخدم
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    // المستخدم مسجل الدخول
-                } else {
-                    // المستخدم غير مسجل الدخول
-                }
-            });
         });
     </script>
 </body>
-</html>
+    </html>
